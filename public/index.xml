@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Vincent B. — Photometry &amp; Metrology</title>
+    <link>http://localhost:1313/</link>
+    <description>Recent content on Vincent B. — Photometry &amp; Metrology</description>
+    <generator>Hugo -- 0.156.0</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 25 Feb 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>http://localhost:1313/about/</link>
+      <pubDate>Wed, 25 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/about/</guid>
+      <description>&lt;p&gt;I work in an ISO 17025 accredited photometry laboratory in Switzerland, specialising in light measurement — luminous flux, spectral power distribution, flicker analysis (PST/SVM) and measurement uncertainty.&lt;/p&gt;
+&lt;p&gt;This blog is a collection of technical notes on photometry, metrology and the tools I develop to support laboratory work.&lt;/p&gt;
+&lt;h2 id=&#34;open-source&#34;&gt;Open-source&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/123VincentB/pyldt&#34;&gt;pyldt&lt;/a&gt; — Python library for reading and writing EULUMDAT (.ldt) photometric files, available on &lt;a href=&#34;https://pypi.org/project/eulumdat-py/&#34;&gt;PyPI&lt;/a&gt; as &lt;code&gt;eulumdat-py&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;laboratory&#34;&gt;Laboratory&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Goniophotometer Rigo 801 - TechnoTeam&lt;/li&gt;
+&lt;li&gt;Accredited according to ISO 17025&lt;/li&gt;
+&lt;/ul&gt;</description>
+    </item>
+    <item>
+      <title>The EULUMDAT file format — a complete technical reference</title>
+      <link>http://localhost:1313/posts/eulumdat-format/</link>
+      <pubDate>Wed, 25 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/eulumdat-format/</guid>
+      <description>A field-by-field description of the EULUMDAT .ldt photometric file format, including symmetry types, lamp sets, intensity data and real-world variations.</description>
+    </item>
+  </channel>
+</rss>
