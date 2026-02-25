@@ -71,6 +71,16 @@
     }
 
 </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+
 </head>
 <body id="top">
     <header class="header">
@@ -427,7 +437,8 @@ produces silently incorrect results on any file where <code>LAMP_TYPE</code> con
 <p>The intensity unit is <strong>cd/klm</strong> (candela per kilolumen of lamp flux), not absolute
 candela. To convert:</p>
 <pre tabindex="0"><code>I [cd] = I [cd/klm] × Φ_lamp [lm] / 1000
-</code></pre><h2 id="symmetry-isym">Symmetry (ISYM)<a hidden class="anchor" aria-hidden="true" href="#symmetry-isym">#</a></h2>
+</code></pre><p>$$I_{abs}(C, \gamma) = I_{rel}(C, \gamma) \times \frac{\Phi_{lamp}}{1000}$$</p>
+<h2 id="symmetry-isym">Symmetry (ISYM)<a hidden class="anchor" aria-hidden="true" href="#symmetry-isym">#</a></h2>
 <p>The most subtle part of the format. ISYM allows the file to store only a subset
 of C-planes, reducing file size and smoothing the distribution.</p>
 <table>

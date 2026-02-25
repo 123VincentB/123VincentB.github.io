@@ -4,6 +4,7 @@ date: 2026-02-25
 draft: false
 tags: ["eulumdat", "ldt", "photometry", "file-format", "python"]
 description: "A field-by-field description of the EULUMDAT .ldt photometric file format, including symmetry types, lamp sets, intensity data and real-world variations."
+math: true
 ---
 
 EULUMDAT is the standard file format for luminaire photometric data in Europe.
@@ -99,9 +100,11 @@ After the lamp sets come:
 
 The intensity unit is **cd/klm** (candela per kilolumen of lamp flux), not absolute
 candela. To convert:
+
 ```
 I [cd] = I [cd/klm] × Φ_lamp [lm] / 1000
 ```
+$$I_{abs}(C, \gamma) = I_{rel}(C, \gamma) \times \frac{\Phi_{lamp}}{1000}$$
 
 ## Symmetry (ISYM)
 
