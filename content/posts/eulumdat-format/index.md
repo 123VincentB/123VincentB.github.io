@@ -159,6 +159,10 @@ print(f"I(C=0°, γ=0°) = {ldt.intensities[0][0]:.1f} cd/klm")
 The library expands the intensity matrix to the full `[MC × NG]` range
 regardless of ISYM, so the caller never has to deal with symmetry reconstruction.
 
+To symmetrise a raw ISYM=0 distribution or automatically detect the appropriate
+ISYM mode, see
+[Symmetrising EULUMDAT photometric files with Python](../eulumdat-symmetry/).
+
 ## References
 
 - LiTG, *EULUMDAT Format Description*, Deutsche Lichttechnische Gesellschaft, 1990
