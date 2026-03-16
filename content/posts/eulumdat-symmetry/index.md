@@ -31,13 +31,13 @@ automatic ISYM detection.
 
 The EULUMDAT format defines five symmetry codes:
 
-| ISYM | Description | Averaging rule |
-|------|-------------|----------------|
-| 0 | No symmetry | None — raw values |
-| 1 | Full rotational symmetry | All C-planes averaged to a single profile |
-| 2 | Symmetry about C0–C180 | $I_{sym}(C) = \dfrac{I(C) + I(360°-C)}{2}$ |
-| 3 | Symmetry about C90–C270 | $I_{sym}(C) = \dfrac{I(C) + I(180°-C)}{2}$ |
-| 4 | Quadrant symmetry | Mean of all 4 quadrant mirror planes |
+| ISYM | Description              | Averaging rule                             |
+| ---- | ------------------------ | ------------------------------------------ |
+| 0    | No symmetry              | None — raw values                          |
+| 1    | Full rotational symmetry | All C-planes averaged to a single profile  |
+| 2    | Symmetry about C0–C180   | $I_{sym}(C) = \dfrac{I(C) + I(360°-C)}{2}$ |
+| 3    | Symmetry about C90–C270  | $I_{sym}(C) = \dfrac{I(C) + I(180°-C)}{2}$ |
+| 4    | Quadrant symmetry        | Mean of all 4 quadrant mirror planes       |
 
 Symmetrising a file sets its ISYM field to the chosen mode and replaces the
 intensity matrix with the averaged values. The file becomes smaller and the
@@ -121,9 +121,9 @@ as seen from directly above. The shape of this footprint is characteristic
 of the luminaire symmetry:
 
 - A **circular** footprint → rotational symmetry (ISYM 1)
-- A **square or rectangular** footprint → quadrant symmetry (ISYM 4)
-- An **elongated** footprint aligned with C0 or C90 → single mirror plane (ISYM 2 or 3)
-- An **off-centre** footprint → asymmetry along a specific axis
+- A square, rectangular, or elongated **centred** footprint → quadrant symmetry (ISYM 4)
+- A footprint **offset along a single axis** (C0 or C90) → single mirror plane (ISYM 2 or 3)
+- A footprint **offset along both axes** → no plausible symmetry (ISYM 0)
 
 The floor and ceiling components are evaluated independently (a luminaire
 may emit only downward, only upward, or both), then combined.
