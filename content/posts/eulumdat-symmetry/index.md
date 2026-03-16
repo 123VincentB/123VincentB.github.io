@@ -51,7 +51,7 @@ distribution becomes exactly symmetric by construction.
 pip install eulumdat-symmetry
 ```
 
-Requires [`eulumdat-py`](https://pypi.org/project/eulumdat-py/) >= 0.1.4.
+Requires [`eulumdat-py`](https://pypi.org/project/eulumdat-py/) >= 1.0.0.
 
 ---
 
