@@ -135,13 +135,29 @@
 
 <article class="post-entry tag-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Symmetrising EULUMDAT photometric files with Python
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>EULUMDAT files store luminous intensity distributions as a matrix of C-planes and γ-angles. When a luminaire has a symmetric distribution, the file can declare this via the ISYM field — allowing lighting design software to reconstruct the full distribution from a reduced set of C-planes.
+In practice, raw goniophotometer measurements are never perfectly symmetric due to measurement noise, lamp positioning tolerances, and minor luminaire asymmetries. Symmetrising the data enforces the intended symmetry by averaging mirror-plane pairs, producing cleaner files that import correctly into DIALux, Relux, and similar tools.
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-03-16 00:00:00 +0000 UTC'>March 16, 2026</span>&nbsp;·&nbsp;<span>4 min</span>&nbsp;·&nbsp;<span>Vincent B.</span></footer>
+  <a class="entry-link" aria-label="post link to Symmetrising EULUMDAT photometric files with Python" href="http://localhost:1313/posts/eulumdat-symmetry/"></a>
+</article>
+
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">The EULUMDAT file format — a complete technical reference
     </h2>
   </header>
   <div class="entry-content">
-    <p>What is EULUMDAT?</p>
+    <p>EULUMDAT is the standard file format for luminaire photometric data in Europe. Despite being widely used — every goniophotometer lab produces .ldt files, every lighting simulation tool (DIALux, Relux, AGi32) consumes them — the format is remarkably poorly documented in English. This article is an attempt to fix that.
+Background The format was defined by the LiTG (Deutsche Lichttechnische Gesellschaft) in 1990. It predates XML, JSON and every modern data format. It is a plain-text, positional file: each piece of data occupies a specific line number, and a single missing or empty line shifts everything that follows, producing a corrupt file.
+...</p>
   </div>
-  <footer class="entry-footer"><span title='2026-02-25 00:00:00 +0000 UTC'>February 25, 2026</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Vincent B.</span></footer>
+  <footer class="entry-footer"><span title='2026-02-25 00:00:00 +0000 UTC'>February 25, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Vincent B.</span></footer>
   <a class="entry-link" aria-label="post link to The EULUMDAT file format — a complete technical reference" href="http://localhost:1313/posts/eulumdat-format/"></a>
 </article>
     </main>

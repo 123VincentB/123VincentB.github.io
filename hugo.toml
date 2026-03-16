@@ -25,7 +25,7 @@ paginate = 10
   url = "https://github.com/123VincentB"
 
 [[params.socialIcons]]
-  name = "pypi.org"
+  name = "pypi"
   url = "https://pypi.org/project/eulumdat-py/"
 
 [menu]
