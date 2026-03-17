@@ -142,7 +142,7 @@ spec that a robust parser must handle:
 
 ## Python implementation
 
-[pyldt](https://github.com/123VincentB/pyldt) is an open-source Python library
+[eulumdat-py](https://github.com/123VincentB/eulumdat-py) is an open-source Python library
 that handles all of the above, available on PyPI as
 [`eulumdat-py`](https://pypi.org/project/eulumdat-py/):
 ```bash
@@ -166,4 +166,4 @@ ISYM mode, see
 ## References
 
 - LiTG, *EULUMDAT Format Description*, Deutsche Lichttechnische Gesellschaft, 1990
-- [pyldt documentation](https://github.com/123VincentB/pyldt/blob/main/docs/eulumdat_format.md)
+- [eulumdat-py documentation](https://github.com/123VincentB/eulumdat-py/blob/main/docs/eulumdat_format.md)

@@ -191,6 +191,6 @@ for path in Path("ldt_files").glob("*.ldt"):
 ## Resources
 
 - [`eulumdat-symmetry` on PyPI](https://pypi.org/project/eulumdat-symmetry/)
-- [Source code on GitHub](https://github.com/123VincentB/ldt_symmetry)
+- [Source code on GitHub](https://github.com/123VincentB/eulumdat-symmetry)
 - [DOI: 10.5281/zenodo.19047884](https://doi.org/10.5281/zenodo.19047884)
 - [`eulumdat-py`](https://pypi.org/project/eulumdat-py/) — read/write EULUMDAT files
