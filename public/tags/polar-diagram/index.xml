@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
-    <title>Pypi on Vincent B. — Photometry &amp; Metrology</title>
-    <link>http://localhost:1313/tags/pypi/</link>
-    <description>Recent content in Pypi on Vincent B. — Photometry &amp; Metrology</description>
+    <title>Polar-Diagram on Vincent B. — Photometry &amp; Metrology</title>
+    <link>http://localhost:1313/tags/polar-diagram/</link>
+    <description>Recent content in Polar-Diagram on Vincent B. — Photometry &amp; Metrology</description>
     <generator>Hugo -- 0.156.0</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 18 Mar 2026 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/pypi/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/polar-diagram/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Generating photometric polar diagrams from EULUMDAT files with Python</title>
       <link>http://localhost:1313/posts/eulumdat-plot/</link>
       <pubDate>Wed, 18 Mar 2026 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/eulumdat-plot/</guid>
       <description>A practical guide to generating publication-ready Lumtopic-style photometric polar diagrams from EULUMDAT .ldt files using the eulumdat-plot Python package.</description>
-    </item>
-    <item>
-      <title>Symmetrising EULUMDAT photometric files with Python</title>
-      <link>http://localhost:1313/posts/eulumdat-symmetry/</link>
-      <pubDate>Mon, 16 Mar 2026 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/eulumdat-symmetry/</guid>
-      <description>A practical guide to symmetrising EULUMDAT .ldt photometric files using the eulumdat-symmetry Python package — including automatic ISYM detection.</description>
     </item>
   </channel>
 </rss>

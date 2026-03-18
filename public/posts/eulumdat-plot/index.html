@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Generating photometric polar diagrams from EULUMDAT files with Python | Vincent B. — Photometry &amp; Metrology</title>
+<meta name="keywords" content="eulumdat, ldt, photometry, polar-diagram, svg, python, pypi">
+<meta name="description" content="A practical guide to generating publication-ready Lumtopic-style photometric polar diagrams from EULUMDAT .ldt files using the eulumdat-plot Python package.">
+<meta name="author" content="Vincent B.">
+<link rel="canonical" href="http://localhost:1313/posts/eulumdat-plot/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.a29c24210eb31d9ce56f669c66a35c9c51b17376b7764e336a49af7dec914cf0.css" integrity="sha256-opwkIQ6zHZzlb2acZqNcnFGxc3a3dk4zakmvfeyRTPA=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/eulumdat-plot/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+  onload="renderMathInElement(document.body, {
+    delimiters: [
+      {left: '$$', right: '$$', display: true},
+      {left: '$', right: '$', display: false}
+    ]
+  });"></script>
+
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Vincent B. — Photometry &amp; Metrology (Alt + H)">Vincent B. — Photometry &amp; Metrology</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/posts/" title="Posts">
+                    <span>Posts</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about/" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/123VincentB" title="GitHub">
+                    <span>GitHub</span>&nbsp;
+                    <svg fill="none" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" height="12" width="12">
+                        <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"></path>
+                        <path d="M15 3h6v6"></path>
+                        <path d="M10 14L21 3"></path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    <div class="breadcrumbs"><a href="http://localhost:1313/">Home</a>&nbsp;»&nbsp;<a href="http://localhost:1313/posts/">Posts</a></div>
+    <h1 class="post-title entry-hint-parent">
+      Generating photometric polar diagrams from EULUMDAT files with Python
+    </h1>
+    <div class="post-description">
+      A practical guide to generating publication-ready Lumtopic-style photometric polar diagrams from EULUMDAT .ldt files using the eulumdat-plot Python package.
+    </div>
+    <div class="post-meta"><span title='2026-03-18 00:00:00 +0000 UTC'>March 18, 2026</span>&nbsp;·&nbsp;<span>5 min</span>&nbsp;·&nbsp;<span>Vincent B.</span>
+
+</div>
+  </header> <div class="toc">
+    <details >
+        <summary accesskey="c" title="(Alt + C)">
+            <span class="details">Table of Contents</span>
+        </summary>
+
+        <div class="inner"><ul>
+                <li>
+                    <a href="#what-the-diagram-shows" aria-label="What the diagram shows">What the diagram shows</a></li>
+                <li>
+                    <a href="#installation" aria-label="Installation">Installation</a></li>
+                <li>
+                    <a href="#quick-start" aria-label="Quick start">Quick start</a></li>
+                <li>
+                    <a href="#architecture" aria-label="Architecture">Architecture</a></li>
+                <li>
+                    <a href="#symmetry-handling" aria-label="Symmetry handling">Symmetry handling</a></li>
+                <li>
+                    <a href="#cie-angular-conventions" aria-label="CIE angular conventions">CIE angular conventions</a></li>
+                <li>
+                    <a href="#interpolation" aria-label="Interpolation">Interpolation</a></li>
+                <li>
+                    <a href="#proportional-scaling" aria-label="Proportional scaling">Proportional scaling</a></li>
+                <li>
+                    <a href="#raster-export" aria-label="Raster export">Raster export</a></li>
+                <li>
+                    <a href="#batch-processing" aria-label="Batch processing">Batch processing</a></li>
+                <li>
+                    <a href="#debug-mode" aria-label="Debug mode">Debug mode</a></li>
+                <li>
+                    <a href="#resources" aria-label="Resources">Resources</a>
+                </li>
+            </ul>
+        </div>
+    </details>
+</div>
+
+  <div class="post-content"><p>Every luminaire photometric file contains a candela distribution — a table of
+intensities indexed by C-plane and γ-angle. Visualising that distribution as a
+polar diagram is one of the most basic tasks in lighting documentation, yet doing
+it correctly requires handling several non-trivial details: symmetry expansion,
+CIE angular conventions, radial autoscaling, and consistent visual presentation.</p>
+<p><a href="https://pypi.org/project/eulumdat-plot/"><code>eulumdat-plot</code></a> is a Python package
+that handles all of this and produces <strong>publication-ready SVG polar diagrams</strong> in
+the style of the Lumtopic software — suitable for product datasheets, PDF
+documentation, and online publication.</p>
+<blockquote>
+<p>This package is designed for <strong>publication output</strong>, not interactive exploration.
+For scientific plots with matplotlib (axis labels, legends, custom styling),
+see the <a href="https://github.com/123VincentB/eulumdat-py/blob/main/examples/02_polar_diagram.md">eulumdat-py polar diagram example</a>.</p>
+</blockquote>
+<blockquote>
+<p>For a field-by-field description of the EULUMDAT format and ISYM codes,
+see <a href="../eulumdat-format">The EULUMDAT file format — a complete technical reference</a>.</p>
+</blockquote>
+<hr>
+<h2 id="what-the-diagram-shows">What the diagram shows<a hidden class="anchor" aria-hidden="true" href="#what-the-diagram-shows">#</a></h2>
+<p>The output is a square SVG image with:</p>
+<ul>
+<li>A <strong>top banner</strong>: &ldquo;LED&rdquo; on the left, an optional distribution code in the
+centre, &ldquo;cd / klm&rdquo; on the right.</li>
+<li>A <strong>polar plot</strong> showing the candela distribution in cd/klm:
+<ul>
+<li>C0/C180 as a <strong>solid</strong> curve</li>
+<li>C90/C270 as a <strong>dotted</strong> curve</li>
+</ul>
+</li>
+<li>A <strong>dynamic radial scale</strong>: 3–6 concentric circles with round values,
+automatically computed from the data maximum.</li>
+<li><strong>Scale labels</strong> placed on the dominant hemisphere (upper or lower,
+detected automatically).</li>
+</ul>
+<p>The CIE photometric convention is applied throughout: γ = 0° points toward
+nadir (directly below the luminaire), γ = 180° toward zenith.</p>
+<img src="https://raw.githubusercontent.com/123VincentB/eulumdat-plot/main/docs/img/sample_01.png" width="300">
+<hr>
+<h2 id="installation">Installation<a hidden class="anchor" aria-hidden="true" href="#installation">#</a></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip install eulumdat-plot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>With raster export (PNG / JPEG):</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip install <span class="s2">&#34;eulumdat-plot[export]&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>With cubic spline interpolation:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip install <span class="s2">&#34;eulumdat-plot[cubic]&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="quick-start">Quick start<a hidden class="anchor" aria-hidden="true" href="#quick-start">#</a></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">eulumdat_plot</span> <span class="kn">import</span> <span class="n">plot_ldt</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span><span class="s2">&#34;luminaire.ldt&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># → luminaire.svg  (next to the source file)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span><span class="s2">&#34;luminaire.ldt&#34;</span><span class="p">,</span> <span class="n">code</span><span class="o">=</span><span class="s2">&#34;D53&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># → luminaire.svg  with &#34;D53&#34; in the banner centre</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>That is the complete API for the common case. The SVG is written next to the
+source file with the same base name.</p>
+<hr>
+<h2 id="architecture">Architecture<a hidden class="anchor" aria-hidden="true" href="#architecture">#</a></h2>
+<p>The package is split into three modules with clear responsibilities:</p>
+<p><strong><code>plot.py</code></strong> — public entry point. Reads the LDT file via
+<a href="https://pypi.org/project/eulumdat-py/"><code>eulumdat-py</code></a>, extracts the four
+principal C-planes by nearest-angle lookup, optionally resamples I(γ), converts
+each plane to NAT coordinates, and calls the renderer.</p>
+<p><strong><code>renderer.py</code></strong> — pure SVG generation. Knows nothing about LDT files.
+Receives lists of <code>(x, y)</code> points and produces an SVG via <code>svgwrite</code>.
+Contains the <code>Layout</code> dataclass and the <code>make_svg()</code> function.</p>
+<p><strong><code>export.py</code></strong> — raster conversion. SVG → PNG or JPEG via
+<code>vl-convert-python</code> (a compiled Rust/resvg renderer bundled in the wheel —
+no native DLL required on any platform).</p>
+<p>This separation means the renderer can be used independently of the LDT
+pipeline, and the export layer can be omitted entirely if only SVG output
+is needed.</p>
+<hr>
+<h2 id="symmetry-handling">Symmetry handling<a hidden class="anchor" aria-hidden="true" href="#symmetry-handling">#</a></h2>
+<p>EULUMDAT files declare a symmetry code (<code>ISYM</code> 0–4) that determines how many
+C-planes are actually stored. Rather than reimplementing symmetry expansion,
+<code>eulumdat-plot</code> delegates entirely to
+<a href="https://pypi.org/project/eulumdat-py/"><code>eulumdat-py</code></a>: <code>LdtReader.read()</code>
+always returns a <strong>full</strong> <code>[MC × NG]</code> intensity matrix regardless of ISYM.
+Extracting C0, C90, C180, and C270 then reduces to a nearest-angle lookup
+on <code>ldt.header.c_angles</code> — no ISYM-specific logic needed in the plot pipeline.</p>
+<hr>
+<h2 id="cie-angular-conventions">CIE angular conventions<a hidden class="anchor" aria-hidden="true" href="#cie-angular-conventions">#</a></h2>
+<p>The polar diagram uses the NAT coordinate system (y pointing upward, θ = 0°
+upward, clockwise positive). The CIE γ → NAT θ mapping is:</p>
+<p>$$\theta_{right}(C_0, C_{90}) = 180° - \gamma$$
+$$\theta_{left}(C_{180}, C_{270}) = 180° + \gamma$$</p>
+<p>This places γ = 0° (nadir) at the bottom of the diagram and γ = 180° (zenith)
+at the top, which is the standard orientation for photometric polar plots.</p>
+<hr>
+<h2 id="interpolation">Interpolation<a hidden class="anchor" aria-hidden="true" href="#interpolation">#</a></h2>
+<p>EULUMDAT files typically store I(γ) at 5° steps. Resampling to 1° before
+plotting produces visibly smoother curves:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># Linear interpolation — default, always available</span>
+</span></span><span class="line"><span class="cl"><span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span><span class="s2">&#34;luminaire.ldt&#34;</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interp_method</span><span class="o">=</span><span class="s2">&#34;linear&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Cubic spline — smoother result, requires scipy</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># pip install &#34;eulumdat-plot[cubic]&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span><span class="s2">&#34;luminaire.ldt&#34;</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interp_method</span><span class="o">=</span><span class="s2">&#34;cubic&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The cubic spline uses <code>scipy.interpolate.CubicSpline</code> with natural boundary
+conditions. Output is clamped to <code>[min, max]</code> of the input to prevent
+overshoot at the boundaries.</p>
+<hr>
+<h2 id="proportional-scaling">Proportional scaling<a hidden class="anchor" aria-hidden="true" href="#proportional-scaling">#</a></h2>
+<p>All visual parameters — stroke widths, font sizes, margins, dash patterns —
+are defined in the <code>Layout</code> dataclass and scale proportionally from the
+1181 px reference via a single factory method:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">eulumdat_plot</span> <span class="kn">import</span> <span class="n">plot_ldt</span><span class="p">,</span> <span class="n">Layout</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 600 × 600 px for a compact datasheet</span>
+</span></span><span class="line"><span class="cl"><span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span><span class="s2">&#34;luminaire.ldt&#34;</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">Layout</span><span class="o">.</span><span class="n">for_size</span><span class="p">(</span><span class="mi">600</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2362 × 2362 px for high-resolution print</span>
+</span></span><span class="line"><span class="cl"><span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span><span class="s2">&#34;luminaire.ldt&#34;</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">Layout</span><span class="o">.</span><span class="n">for_size</span><span class="p">(</span><span class="mi">2362</span><span class="p">))</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><code>Layout.for_size(1181)</code> is identical to the default <code>Layout()</code>.
+Individual parameters can be adjusted after construction:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">layout</span> <span class="o">=</span> <span class="n">Layout</span><span class="o">.</span><span class="n">for_size</span><span class="p">(</span><span class="mi">800</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">layout</span><span class="o">.</span><span class="n">stroke_curve_solid</span> <span class="o">=</span> <span class="mf">12.0</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="raster-export">Raster export<a hidden class="anchor" aria-hidden="true" href="#raster-export">#</a></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">eulumdat_plot</span> <span class="kn">import</span> <span class="n">plot_ldt</span><span class="p">,</span> <span class="n">Layout</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">eulumdat_plot.export</span> <span class="kn">import</span> <span class="n">svg_to_png</span><span class="p">,</span> <span class="n">svg_to_jpg</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span><span class="s2">&#34;luminaire.ldt&#34;</span><span class="p">,</span> <span class="n">layout</span><span class="o">=</span><span class="n">Layout</span><span class="o">.</span><span class="n">for_size</span><span class="p">(</span><span class="mi">1181</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Export at any size — independent of the SVG canvas size</span>
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">size</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">600</span><span class="p">,</span> <span class="mi">1181</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">svg_to_png</span><span class="p">(</span><span class="n">svg</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&#34;diagram_</span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">px.png&#34;</span><span class="p">,</span> <span class="n">size_px</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">svg_to_jpg</span><span class="p">(</span><span class="n">svg</span><span class="p">,</span> <span class="s2">&#34;diagram.jpg&#34;</span><span class="p">,</span> <span class="n">size_px</span><span class="o">=</span><span class="mi">600</span><span class="p">,</span> <span class="n">quality</span><span class="o">=</span><span class="mi">95</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The export uses <code>vl-convert-python</code>, which bundles a compiled Rust SVG
+renderer (resvg) inside the wheel. No Cairo, no GTK runtime, no system
+library installation required on Windows, Linux, or macOS.</p>
+<hr>
+<h2 id="batch-processing">Batch processing<a hidden class="anchor" aria-hidden="true" href="#batch-processing">#</a></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">eulumdat_plot</span> <span class="kn">import</span> <span class="n">plot_ldt</span><span class="p">,</span> <span class="n">Layout</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">eulumdat_plot.export</span> <span class="kn">import</span> <span class="n">svg_to_png</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">input_dir</span>  <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&#34;ldt_files&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">output_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="s2">&#34;output&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">output_dir</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">layout</span> <span class="o">=</span> <span class="n">Layout</span><span class="o">.</span><span class="n">for_size</span><span class="p">(</span><span class="mi">1181</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">ldt_file</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">input_dir</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&#34;*.ldt&#34;</span><span class="p">)):</span>
+</span></span><span class="line"><span class="cl">    <span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">ldt_file</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">output_dir</span> <span class="o">/</span> <span class="n">ldt_file</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&#34;.svg&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">layout</span><span class="o">=</span><span class="n">layout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">svg_to_png</span><span class="p">(</span><span class="n">svg</span><span class="p">,</span> <span class="n">output_dir</span> <span class="o">/</span> <span class="n">ldt_file</span><span class="o">.</span><span class="n">with_suffix</span><span class="p">(</span><span class="s2">&#34;.png&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">size_px</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;✓  </span><span class="si">{</span><span class="n">ldt_file</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="debug-mode">Debug mode<a hidden class="anchor" aria-hidden="true" href="#debug-mode">#</a></h2>
+<p>The <code>debug=True</code> flag colour-codes each C-plane to validate the symmetry
+expansion visually: C0 → red, C180 → blue, C90 → green, C270 → orange.
+Useful when processing files from manufacturers whose ISYM declarations are
+inconsistent.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="n">svg</span> <span class="o">=</span> <span class="n">plot_ldt</span><span class="p">(</span><span class="s2">&#34;luminaire.ldt&#34;</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><hr>
+<h2 id="resources">Resources<a hidden class="anchor" aria-hidden="true" href="#resources">#</a></h2>
+<ul>
+<li><a href="https://pypi.org/project/eulumdat-plot/"><code>eulumdat-plot</code> on PyPI</a></li>
+<li><a href="https://github.com/123VincentB/eulumdat-plot">Source code on GitHub</a></li>
+<li><a href="https://doi.org/10.5281/zenodo.19096110">DOI: 10.5281/zenodo.19096110</a></li>
+<li><a href="https://pypi.org/project/eulumdat-py/"><code>eulumdat-py</code></a> — read/write EULUMDAT files</li>
+<li><a href="https://pypi.org/project/eulumdat-symmetry/"><code>eulumdat-symmetry</code></a> — symmetrise EULUMDAT files</li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/eulumdat/">Eulumdat</a></li>
+      <li><a href="http://localhost:1313/tags/ldt/">Ldt</a></li>
+      <li><a href="http://localhost:1313/tags/photometry/">Photometry</a></li>
+      <li><a href="http://localhost:1313/tags/polar-diagram/">Polar-Diagram</a></li>
+      <li><a href="http://localhost:1313/tags/svg/">Svg</a></li>
+      <li><a href="http://localhost:1313/tags/python/">Python</a></li>
+      <li><a href="http://localhost:1313/tags/pypi/">Pypi</a></li>
+    </ul>
+<nav class="paginav">
+  <a class="next" href="http://localhost:1313/posts/eulumdat-symmetry/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Symmetrising EULUMDAT photometric files with Python</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Vincent B. — Photometry &amp; Metrology</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

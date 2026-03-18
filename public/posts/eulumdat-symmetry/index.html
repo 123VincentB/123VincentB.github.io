@@ -248,7 +248,7 @@ distribution becomes exactly symmetric by construction.</p>
 <pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">pip install eulumdat-symmetry
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p>Requires <a href="https://pypi.org/project/eulumdat-py/"><code>eulumdat-py</code></a> &gt;= 0.1.4.</p>
+</div><p>Requires <a href="https://pypi.org/project/eulumdat-py/"><code>eulumdat-py</code></a> &gt;= 1.0.0.</p>
 <hr>
 <h2 id="symmetrising-with-a-known-isym-mode">Symmetrising with a known ISYM mode<a hidden class="anchor" aria-hidden="true" href="#symmetrising-with-a-known-isym-mode">#</a></h2>
 <p>When the symmetry of the luminaire is known in advance, use <code>LdtSymmetriser</code>
@@ -332,9 +332,9 @@ as seen from directly above. The shape of this footprint is characteristic
 of the luminaire symmetry:</p>
 <ul>
 <li>A <strong>circular</strong> footprint → rotational symmetry (ISYM 1)</li>
-<li>A <strong>square or rectangular</strong> footprint → quadrant symmetry (ISYM 4)</li>
-<li>An <strong>elongated</strong> footprint aligned with C0 or C90 → single mirror plane (ISYM 2 or 3)</li>
-<li>An <strong>off-centre</strong> footprint → asymmetry along a specific axis</li>
+<li>A square, rectangular, or elongated <strong>centred</strong> footprint → quadrant symmetry (ISYM 4)</li>
+<li>A footprint <strong>offset along a single axis</strong> (C0 or C90) → single mirror plane (ISYM 2 or 3)</li>
+<li>A footprint <strong>offset along both axes</strong> → no plausible symmetry (ISYM 0)</li>
 </ul>
 <p>The floor and ceiling components are evaluated independently (a luminaire
 may emit only downward, only upward, or both), then combined.</p>
@@ -420,7 +420,7 @@ why a particular mode was accepted or rejected:</p>
 <h2 id="resources">Resources<a hidden class="anchor" aria-hidden="true" href="#resources">#</a></h2>
 <ul>
 <li><a href="https://pypi.org/project/eulumdat-symmetry/"><code>eulumdat-symmetry</code> on PyPI</a></li>
-<li><a href="https://github.com/123VincentB/ldt_symmetry">Source code on GitHub</a></li>
+<li><a href="https://github.com/123VincentB/eulumdat-symmetry">Source code on GitHub</a></li>
 <li><a href="https://doi.org/10.5281/zenodo.19047884">DOI: 10.5281/zenodo.19047884</a></li>
 <li><a href="https://pypi.org/project/eulumdat-py/"><code>eulumdat-py</code></a> — read/write EULUMDAT files</li>
 </ul>
@@ -438,6 +438,11 @@ why a particular mode was accepted or rejected:</p>
       <li><a href="http://localhost:1313/tags/pypi/">Pypi</a></li>
     </ul>
 <nav class="paginav">
+  <a class="prev" href="http://localhost:1313/posts/eulumdat-plot/">
+    <span class="title">« Prev</span>
+    <br>
+    <span>Generating photometric polar diagrams from EULUMDAT files with Python</span>
+  </a>
   <a class="next" href="http://localhost:1313/posts/eulumdat-format/">
     <span class="title">Next »</span>
     <br>

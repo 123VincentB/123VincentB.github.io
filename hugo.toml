@@ -45,3 +45,6 @@ paginate = 10
 [markup.highlight]
   noClasses = false
   lineNos = true
+
+[markup.goldmark.renderer]
+  unsafe = true
