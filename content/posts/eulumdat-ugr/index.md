@@ -184,6 +184,8 @@ combinations are evaluated:
 The result is a $19 \times 10$ table (19 rooms × 2 directions × 5 reflectances =
 190 UGR values), exportable as CSV or JSON.
 
+![Sample UGR catalogue table — CIE 117 / CIE 190, SHR = 0.25](sample_ugr.png)
+
 ---
 
 ## Export
