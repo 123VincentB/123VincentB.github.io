@@ -101,7 +101,7 @@ This ensures that `luminous_flux_range(ldt, 0.0, 180.0)` is always
 **exactly equal** to `luminous_flux(ldt)`, and that the additivity property
 holds to second-order accuracy:
 
-$$\phi[0°, 90°] \approx \phi[0°, 45°] + \phi[45°, 90°]$$
+$$\phi[0{}^{\circ}, 90{}^{\circ}] \approx \phi[0{}^{\circ}, 45{}^{\circ}] + \phi[45{}^{\circ}, 90{}^{\circ}]$$
 
 (A small second-order interpolation error may appear when 45° is not a grid
 angle, which is why the additivity tolerance is 1e-4 rather than 1e-6.)

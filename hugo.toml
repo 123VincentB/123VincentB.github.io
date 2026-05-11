@@ -42,6 +42,12 @@ paginate = 10
     url = "https://github.com/123VincentB"
     weight = 3
 
+[markup.goldmark.extensions.passthrough]
+  enable = true
+  [markup.goldmark.extensions.passthrough.delimiters]
+    block = [["$$", "$$"]]
+    inline = [["$", "$"]]
+
 [markup.highlight]
   noClasses = false
   lineNos = true
