@@ -1,0 +1,6 @@
+# Claude Code — fichiers de contexte (sauvegardés dans claude-context)
+CLAUDE.md
+CONTEXT*.md
+
+# Build Hugo local (rebuild par GitHub Actions, pas depuis ce dossier)
+public/
